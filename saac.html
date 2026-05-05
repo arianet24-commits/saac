@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAAC — Servicios de Asesoría Académica Colaborativa</title>
+<meta name="description" content="Plataforma colaborativa dedicada a la asesoría académica. Acompañamos a estudiantes, investigadores y profesionales con rigor científico y herramientas digitales.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --azul: #1a4f8c;
+    --azul-claro: #2d6bb5;
+    --azul-dark: #0e3266;
+    --naranja: #e8711a;
+    --naranja-hover: #c95e10;
+    --gris-fondo: #f4f6fa;
+    --gris-suave: #e8ecf3;
+    --texto: #1c2d45;
+    --texto-suave: #4a607a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--gris-fondo);
+    color: var(--texto);
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: white;
+    border-bottom: 1px solid var(--gris-suave);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-logo {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+  }
+  .nav-logo img {
+    height: 44px;
+    width: auto;
+    display: block;
+  }
+  .nav-links {
+    display: flex;
+    gap: 1.75rem;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--azul); }
+  .nav-cta {
+    background: var(--naranja);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: 'Source Sans 3', sans-serif;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .nav-cta:hover { background: var(--naranja-hover); }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0e3266 0%, #1a4f8c 60%, #2d6bb5 100%);
+    padding: 4.5rem 2rem 3.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -50px; left: -50px;
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.85);
+    font-size: 0.72rem;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    padding: 0.35rem 1rem;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    color: white;
+    font-weight: 700;
+    line-height: 1.18;
+    margin-bottom: 1rem;
+  }
+  .hero h1 em { color: #f0a050; font-style: normal; }
+  .hero p {
+    color: rgba(255,255,255,0.75);
+    font-size: 1.05rem;
+    max-width: 520px;
+    margin: 0 auto 2.25rem;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--naranja);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.9rem;
+    border-radius: 7px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Source Sans 3', sans-serif;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--naranja-hover); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: white;
+    border: 1.5px solid rgba(255,255,255,0.45);
+    padding: 0.8rem 1.9rem;
+    border-radius: 7px;
+    font-size: 0.95rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Source Sans 3', sans-serif;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: white; background: rgba(255,255,255,0.08); }
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    color: white;
+    font-weight: 700;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-top: 3px;
+  }
+
+  /* ── SECTIONS COMUNES ── */
+  section { padding: 3.5rem 2rem; }
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--naranja);
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.85rem;
+    color: var(--azul);
+    margin-bottom: 0.6rem;
+  }
+  .section-sub {
+    color: var(--texto-suave);
+    font-size: 0.975rem;
+    line-height: 1.65;
+  }
+
+  /* ── QUIÉNES SOMOS ── */
+  .quienes { background: white; }
+  .quienes-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .quienes-text p {
+    color: var(--texto-suave);
+    font-size: 0.975rem;
+    line-height: 1.75;
+    margin-top: 0.85rem;
+  }
+  .quienes-visual {
+    background: var(--gris-fondo);
+    border-radius: 14px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .quienes-pill {
+    background: white;
+    border: 1px solid var(--gris-suave);
+    border-radius: 10px;
+    padding: 0.85rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--texto);
+  }
+  .pill-ico {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .btn-secundario {
+    background: var(--naranja);
+    color: white;
+    border: none;
+    padding: 0.65rem 1.5rem;
+    border-radius: 7px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1.25rem;
+    transition: background 0.2s;
+    font-family: 'Source Sans 3', sans-serif;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-secundario:hover { background: var(--naranja-hover); }
+
+  /* ── SERVICIOS ── */
+  .servicios { background: var(--gris-fondo); }
+  .servicios-header { text-align: center; margin-bottom: 2.25rem; }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    max-width: 900px;
+    margin: 0 auto 1.25rem;
+  }
+  .card {
+    background: white;
+    border-radius: 12px;
+    border: 1.5px solid var(--gris-suave);
+    padding: 1.6rem;
+    text-align: center;
+    transition: all 0.22s;
+    cursor: pointer;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(26,79,140,0.1); border-color: var(--azul-claro); }
+  .card.active { border-color: var(--naranja); box-shadow: 0 0 0 3px rgba(232,113,26,0.12); }
+  .card-icon {
+    width: 54px; height: 54px;
+    border-radius: 12px;
+    margin: 0 auto 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card h3 { font-size: 1rem; font-weight: 600; color: var(--azul); margin-bottom: 0.4rem; }
+  .card p { font-size: 0.855rem; color: var(--texto-suave); line-height: 1.55; }
+  .card-detail {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    border: 1px solid var(--gris-suave);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    display: none;
+    animation: fadeIn 0.2s ease;
+  }
+  .card-detail.visible { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  .card-detail h4 { color: var(--azul); font-size: 1.05rem; margin-bottom: 0.75rem; }
+  .card-detail ul { padding-left: 1.25rem; color: var(--texto-suave); font-size: 0.9rem; line-height: 1.9; }
+  .servicios-cta { text-align: center; margin-top: 2rem; }
+
+  /* ── POR QUÉ ── */
+  .porque { background: white; }
+  .porque-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .check-list { list-style: none; margin-top: 1.25rem; }
+  .check-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--gris-suave);
+    font-size: 0.925rem;
+    color: var(--texto-suave);
+  }
+  .check-list li:last-child { border-bottom: none; }
+  .check-ico {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--azul);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+  .porque-visual {
+    background: var(--gris-fondo);
+    border-radius: 14px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .mini-stat {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--gris-suave);
+  }
+  .mini-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--azul);
+    font-weight: 700;
+  }
+  .mini-stat-label { font-size: 0.8rem; color: var(--texto-suave); margin-top: 3px; }
+
+  /* ── COMUNIDAD ── */
+  .comunidad { background: var(--gris-fondo); }
+  .comunidad-header { text-align: center; margin-bottom: 2.25rem; }
+  .testimonios {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    max-width: 900px;
+    margin: 0 auto 2rem;
+  }
+  .testimonio {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--gris-suave);
+    padding: 1.4rem 1.6rem;
+  }
+  .testimonio-texto {
+    font-size: 0.925rem;
+    color: var(--texto);
+    line-height: 1.7;
+    margin-bottom: 0.85rem;
+    font-style: italic;
+  }
+  .testimonio-autor { font-size: 0.8rem; color: var(--texto-suave); font-weight: 600; }
+  .comunidad-cta { text-align: center; }
+  .btn-azul {
+    background: var(--azul);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.9rem;
+    border-radius: 7px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: 'Source Sans 3', sans-serif;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-azul:hover { background: var(--azul-dark); }
+
+  /* ── CTA FINAL ── */
+  .cta-final {
+    background: linear-gradient(135deg, #0e3266, #1a4f8c);
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+  .cta-final h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.85rem;
+    color: white;
+    margin-bottom: 0.6rem;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cta-final p {
+    color: rgba(255,255,255,0.68);
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #0a1e3d;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 1.5rem 2rem;
+    font-size: 0.8rem;
+  }
+  footer strong { color: rgba(255,255,255,0.75); }
+
+  /* ── HAMBURGUESA ── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: none;
+    border: none;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--azul);
+    border-radius: 2px;
+    transition: all 0.25s;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 57px;
+    left: 0; right: 0;
+    background: white;
+    border-bottom: 1px solid var(--gris-suave);
+    padding: 0.5rem 1.5rem 1.5rem;
+    z-index: 99;
+    flex-direction: column;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    text-decoration: none;
+    color: var(--texto-suave);
+    font-size: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--gris-suave);
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--azul); }
+  .mobile-menu .mob-cta {
+    margin-top: 1rem;
+    background: var(--naranja);
+    color: white;
+    text-align: center;
+    padding: 0.75rem;
+    border-radius: 7px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-bottom: none;
+  }
+  .mobile-menu .mob-cta:hover { background: var(--naranja-hover); color: white; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .hero h1 { font-size: 1.8rem; }
+    .hero-stats { gap: 1.5rem; }
+    .quienes-inner,
+    .porque-inner { grid-template-columns: 1fr; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .testimonios { grid-template-columns: 1fr; }
+    nav { padding: 0.75rem 1.25rem; }
+    section { padding: 2.5rem 1.25rem; }
+    .cta-final h2 { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVEGACIÓN -->
+<nav>
+  <a class="nav-logo" href="#"><img src="logo-saac.png" alt="SAAC"></a>
+  <ul class="nav-links">
+    <li><a href="#quienes">Quiénes somos</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#porque">¿Por qué elegirnos?</a></li>
+    <li><a href="#comunidad">Comunidad</a></li>
+  </ul>
+  <a class="nav-cta" href="https://wa.me/5353494244?text=Hola%2C%20me%20interesa%20conocer%20SAAC%20Premium" target="_blank">SAAC Premium</a>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MENÚ MÓVIL -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#quienes" onclick="closeMenu()">Quiénes somos</a>
+  <a href="#servicios" onclick="closeMenu()">Servicios</a>
+  <a href="#porque" onclick="closeMenu()">¿Por qué elegirnos?</a>
+  <a href="#comunidad" onclick="closeMenu()">Comunidad</a>
+  <a class="mob-cta" href="https://wa.me/5353494244?text=Hola%2C%20me%20interesa%20conocer%20SAAC%20Premium" target="_blank" onclick="closeMenu()">SAAC Premium</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Plataforma de asesoría académica colaborativa</div>
+    <h1>Rigor académico,<br><em>accesibilidad</em> y colaboración digital</h1>
+    <p>Acompañamos a estudiantes, investigadores y profesionales en el desarrollo de proyectos con rigor científico y herramientas innovadoras.</p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="https://wa.me/5353494244?text=Hola%2C%20quiero%20explorar%20los%20servicios%20de%20SAAC" target="_blank">Explorar servicios</a>
+      <a class="btn-outline" href="#quienes">Conócenos</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Líneas de servicio</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Digital y accesible</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Conocimiento colaborativo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIÉNES SOMOS -->
+<section class="quienes" id="quienes">
+  <div class="quienes-inner">
+    <div class="quienes-text">
+      <div class="section-label">Nuestra identidad</div>
+      <div class="section-title">¿Quiénes somos?</div>
+      <p>SAAC es una plataforma dedicada a la <strong>asesoría académica colaborativa</strong>. Nuestro propósito es acompañar a estudiantes, investigadores y profesionales en el desarrollo de sus proyectos con rigor científico, accesibilidad y herramientas digitales innovadoras.</p>
+      <a class="btn-secundario" href="https://wa.me/5353494244?text=Hola%2C%20quiero%20conocer%20m%C3%A1s%20sobre%20SAAC" target="_blank">Escríbenos</a>
+    </div>
+    <div class="quienes-visual">
+      <div class="quienes-pill">
+        <div class="pill-ico" style="background:#e6f1fb;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#1a4f8c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span>Rigor científico en cada servicio</span>
+      </div>
+      <div class="quienes-pill">
+        <div class="pill-ico" style="background:#fef0e6;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#e8711a" stroke-width="2"/><path d="M12 8v4l3 3" stroke="#e8711a" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <span>Acompañamiento personalizado</span>
+      </div>
+      <div class="quienes-pill">
+        <div class="pill-ico" style="background:#eaf3de;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="#3b6d11" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="#3b6d11" stroke-width="2"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="#3b6d11" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <span>Red colaborativa activa</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section class="servicios" id="servicios">
+  <div class="servicios-header">
+    <div class="section-label">Lo que ofrecemos</div>
+    <div class="section-title">Nuestros servicios</div>
+    <p class="section-sub">Toca un servicio para ver más detalles</p>
+  </div>
+  <div class="cards-grid">
+    <div class="card" id="card-1" onclick="toggleCard(1)">
+      <div class="card-icon" style="background:#e6f1fb;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="#1a4f8c" stroke-width="2" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="#1a4f8c" stroke-width="2"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="#1a4f8c" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <h3>Asesorías Premium</h3>
+      <p>Mentoría experta personalizada para tus proyectos académicos</p>
+    </div>
+    <div class="card" id="card-2" onclick="toggleCard(2)">
+      <div class="card-icon" style="background:#fef0e6;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#e8711a" stroke-width="2" stroke-linecap="round"/><polyline points="14,2 14,8 20,8" stroke="#e8711a" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="13" x2="8" y2="13" stroke="#e8711a" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="17" x2="8" y2="17" stroke="#e8711a" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <h3>Productos Digitales</h3>
+      <p>Ebooks, guías y cursos diseñados con rigor académico</p>
+    </div>
+    <div class="card" id="card-3" onclick="toggleCard(3)">
+      <div class="card-icon" style="background:#eaf3de;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="#3b6d11" stroke-width="2"/><line x1="16" y1="2" x2="16" y2="6" stroke="#3b6d11" stroke-width="2" stroke-linecap="round"/><line x1="8" y1="2" x2="8" y2="6" stroke="#3b6d11" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="10" x2="21" y2="10" stroke="#3b6d11" stroke-width="2"/></svg>
+      </div>
+      <h3>Suscripciones</h3>
+      <p>Acceso exclusivo mensual a contenido académico y herramientas</p>
+    </div>
+  </div>
+
+  <div class="card-detail" id="detail-1">
+    <h4>Asesorías Premium — Mentoría personalizada</h4>
+    <ul>
+      <li>Acompañamiento en diseño y desarrollo de investigaciones</li>
+      <li>Revisión metodológica y estructural de proyectos</li>
+      <li>Preparación para defensas académicas y publicaciones</li>
+      <li>Sesiones individuales con expertos especializados</li>
+    </ul>
+  </div>
+  <div class="card-detail" id="detail-2">
+    <h4>Productos Digitales — Recursos académicos descargables</h4>
+    <ul>
+      <li>Ebooks sobre metodología, diseño y gestión del conocimiento</li>
+      <li>Guías paso a paso para estructurar trabajos científicos</li>
+      <li>Cursos autoguiados con evaluación integrada</li>
+      <li>Plantillas y modelos reutilizables para investigadores</li>
+    </ul>
+  </div>
+  <div class="card-detail" id="detail-3">
+    <h4>Suscripciones — Acceso mensual exclusivo</h4>
+    <ul>
+      <li>Biblioteca académica actualizada mensualmente</li>
+      <li>Acceso prioritario a nuevos productos y servicios</li>
+      <li>Comunidad privada de investigadores y profesionales</li>
+      <li>Descuentos en asesorías premium para suscriptores</li>
+    </ul>
+  </div>
+
+  <div class="servicios-cta">
+    <a class="btn-primary" href="https://wa.me/5353494244?text=Hola%2C%20quiero%20conocer%20todos%20los%20servicios%20y%20precios%20de%20SAAC" target="_blank">Consultar precios y disponibilidad</a>
+  </div>
+</section>
+
+<!-- POR QUÉ ELEGIRNOS -->
+<section class="porque" id="porque">
+  <div class="porque-inner">
+    <div>
+      <div class="section-label">Nuestra propuesta</div>
+      <div class="section-title">¿Por qué elegirnos?</div>
+      <p class="section-sub">En SAAC creemos que el conocimiento debe ser accesible y colaborativo.</p>
+      <ul class="check-list">
+        <li>
+          <span class="check-ico"><svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
+          <span><strong>Rigor académico garantizado</strong> — Estándares científicos en todos nuestros servicios</span>
+        </li>
+        <li>
+          <span class="check-ico"><svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
+          <span><strong>Recursos accesibles y prácticos</strong> — Adaptados a las realidades del contexto cubano</span>
+        </li>
+        <li>
+          <span class="check-ico"><svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
+          <span><strong>Innovación digital aplicada</strong> — Herramientas que potencian el aprendizaje</span>
+        </li>
+        <li>
+          <span class="check-ico"><svg width="12" height="12" viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/></svg></span>
+          <span><strong>Red de colaboración activa</strong> — Comunidad de expertos, investigadores y creadores</span>
+        </li>
+      </ul>
+    </div>
+    <div class="porque-visual">
+      <div class="mini-stat">
+        <div class="mini-stat-num" style="color:var(--naranja)">Premium</div>
+        <div class="mini-stat-label">Mentoría individualizada con expertos certificados</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-num">Digital</div>
+        <div class="mini-stat-label">Recursos disponibles en cualquier momento y lugar</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-num" style="color:var(--azul-claro)">Comunidad</div>
+        <div class="mini-stat-label">Red colaborativa de conocimiento compartido</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMUNIDAD -->
+<section class="comunidad" id="comunidad">
+  <div class="comunidad-header">
+    <div class="section-label">Voces de nuestra red</div>
+    <div class="section-title">Nuestra comunidad</div>
+  </div>
+  <div class="testimonios">
+    <div class="testimonio">
+      <div class="testimonio-texto">"Gracias a SAAC pude estructurar mi investigación con claridad y confianza. El acompañamiento fue decisivo para mi defensa."</div>
+      <div class="testimonio-autor">— Estudiante de posgrado, UH</div>
+    </div>
+    <div class="testimonio">
+      <div class="testimonio-texto">"Las asesorías premium me dieron el respaldo académico que necesitaba para publicar. Resultados concretos, no promesas."</div>
+      <div class="testimonio-autor">— Investigador joven, CITMA</div>
+    </div>
+    <div class="testimonio">
+      <div class="testimonio-texto">"Los productos digitales de SAAC tienen un nivel de rigor que no encuentro en otro lugar. Una inversión real en mi formación."</div>
+      <div class="testimonio-autor">— Profesional independiente</div>
+    </div>
+    <div class="testimonio">
+      <div class="testimonio-texto">"La comunidad SAAC me conectó con personas que piensan el conocimiento como yo: con seriedad y vocación colaborativa."</div>
+      <div class="testimonio-autor">— Docente universitaria</div>
+    </div>
+  </div>
+  <div class="comunidad-cta">
+    <a class="btn-azul" href="https://wa.me/5353494244?text=Hola%2C%20quiero%20unirme%20a%20la%20comunidad%20SAAC" target="_blank">Únete a la comunidad</a>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <h2>Tu proyecto merece rigor, acompañamiento y visión digital.</h2>
+  <p>Con SAAC, el conocimiento se convierte en colaboración.</p>
+  <a class="btn-primary" href="https://wa.me/5353494244?text=Hola%2C%20quiero%20acceder%20a%20SAAC%20Premium.%20%C2%BFCu%C3%A1les%20son%20los%20planes%20disponibles%3F" target="_blank" style="font-size:1rem;padding:0.9rem 2.25rem;">Acceder a SAAC Premium</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>SAAC</strong> — Servicios de Asesoría Académica Colaborativa · Cuba · 2025</p>
+</footer>
+
+<script>
+  function toggleMenu() {
+    const btn = document.getElementById('hamburger');
+    const menu = document.getElementById('mobile-menu');
+    btn.classList.toggle('open');
+    menu.classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobile-menu').classList.remove('open');
+  }
+  let activeCard = null;
+  function toggleCard(n) {
+    const detail = document.getElementById('detail-' + n);
+    const card = document.getElementById('card-' + n);
+    if (activeCard === n) {
+      detail.classList.remove('visible');
+      card.classList.remove('active');
+      activeCard = null;
+    } else {
+      [1,2,3].forEach(function(i) {
+        document.getElementById('detail-' + i).classList.remove('visible');
+        document.getElementById('card-' + i).classList.remove('active');
+      });
+      detail.classList.add('visible');
+      card.classList.add('active');
+      activeCard = n;
+      detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+</script>
+</body>
+</html>
